@@ -1,4 +1,4 @@
-defmodule SknLog do
+defmodule Skn.Log do
     defmacro warn(chardata_or_fun, metadata \\ []) do
         quote do
             if Process.get(:debug, false) == true do

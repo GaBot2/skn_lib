@@ -1,4 +1,4 @@
-defmodule SknUtil do
+defmodule Skn.Util do
     use Bitwise
 
     def decode_float(bin) do
@@ -209,11 +209,11 @@ defmodule SknUtil do
     end
 
     def q_name(name) do
-        V1.DB.Config.get(name)
+        Skn.Config.get(name)
     end
 
     def q_name(name, inst) do
-        V1.DB.Config.get({name, inst})
+        Skn.Config.get({name, inst})
     end
 
     def q_correlation_id(bottype, botid) do

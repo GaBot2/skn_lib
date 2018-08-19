@@ -1,3 +1,0 @@
-defmodule SknLib do
-
-end
