@@ -1,6 +1,7 @@
 defmodule Skn.Config do
   require Record
 
+  @default_seq_max 9_999_999_000
   @skn_config_fields [key: :nil, value: :nil]
   Record.defrecord :skn_config, @skn_config_fields
 
@@ -77,8 +78,12 @@ defmodule Skn.Config do
       :ok
   end
 
-  def gen_id(key) do
-      Skn.Counter.update_counter(key, 1)
+  def gen_id(key, threshold\\ @default_seq_max) do
+      id = Skn.Counter.update_counter(key, 1)
+      if id > threshold do
+          reset_id(:proxy_auth_seq, 1)
+      end
+      id
   end
 
   def reset_id(key, value) do
