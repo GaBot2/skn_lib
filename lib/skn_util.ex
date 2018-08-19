@@ -207,21 +207,4 @@ defmodule Skn.Util do
     def split_list(list, size) do
         Enum.chunk_every(list, size)
     end
-
-    def q_name(name) do
-        Skn.Config.get(name)
-    end
-
-    def q_name(name, inst) do
-        Skn.Config.get({name, inst})
-    end
-
-    def q_correlation_id(bottype, botid) do
-        case bottype do
-        :none -> botid
-        :order -> botid
-        :farmer -> "BT_#{botid}"
-        _ -> "BT_AH_#{botid}"
-        end
-    end
 end
