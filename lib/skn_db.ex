@@ -10,7 +10,7 @@ defmodule Skn.Config do
   end
 
   def create_table() do
-      :mnesia.create_table(:bot_config,[disc_copies: [node()], record_name: :skn_config, attributes: fields(@skn_config_fields)])
+      :mnesia.create_table(:skn_config,[disc_copies: [node()], record_name: :skn_config, attributes: fields(@skn_config_fields)])
   end
 
 
@@ -19,7 +19,7 @@ defmodule Skn.Config do
       v when is_map(v) ->
         Map.get(v, key, default)
       _ ->
-        case :mnesia.dirty_read(:bot_config, key) do
+        case :mnesia.dirty_read(:skn_config, key) do
           [c | _] -> skn_config(c, :value)
           _ -> default
         end
@@ -27,7 +27,7 @@ defmodule Skn.Config do
   end
 
   def delete(key) do
-    :mnesia.dirty_delete(:bot_config, key)
+    :mnesia.dirty_delete(:skn_config, key)
   end
 
   def set_if(key, value) do
@@ -39,13 +39,13 @@ defmodule Skn.Config do
 
   def set(key, value) do
     obj = skn_config(key: key, value: value)
-    :mnesia.dirty_write(:bot_config, obj)
+    :mnesia.dirty_write(:skn_config, obj)
   end
 
   def set_tranc(key, value) do
     f = fn ->
       obj = skn_config(key: key, value: value)
-      :mnesia.write(:bot_config, obj, :write)
+      :mnesia.write(:skn_config, obj, :write)
     end
     :mnesia.transaction(f)
   end
