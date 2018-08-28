@@ -97,7 +97,7 @@ end
 defmodule Skn.Counter do
   @def_threshold  5_000_000_000
   @table :skn_counter
-  def ensure_init() do
+  def create_db() do
     case :ets.info(@table) do
       :undefined ->
         :ets.new( @table, [:public, :named_table, {:read_concurrency, true}, {:write_concurrency, true}])
