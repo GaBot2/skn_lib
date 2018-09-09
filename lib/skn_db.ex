@@ -95,6 +95,9 @@ end
 
 
 defmodule Skn.Counter do
+  use GenServer
+  require Logger
+  @name :skn_counter
   @def_threshold  5_000_000_000
   @table :skn_counter
   def create_db() do
@@ -131,4 +134,105 @@ defmodule Skn.Counter do
   def update_counter(name, incr) do
     :ets.update_counter(@table, name, {2, incr, @def_threshold, 1}, {name, incr})
   end
+
+  def check_avg_min_max(name) do
+    is_avg_mix_max = String.contains?(name, "_avg") or String.contains?(name, "_min") or String.contains?(name, "_max")
+    if is_avg_mix_max do
+      len = byte_size(name)
+      base = String.slice(name, 0, len - 4)
+      nk = :erlang.binary_to_existing_atom(name, :latin1)
+      os = Enum.reduce(["_avg", "_min", "_max"], [], fn(x, acc) ->
+        xx = base <> x
+        if xx != name do
+          [:erlang.binary_to_existing_atom(xx, :latin1)| acc]
+        else
+          acc
+        end
+      end)
+      {true, nk, os, :erlang.binary_to_existing_atom(base <> "_count", :latin1)}
+    else
+      {false, :erlang.binary_to_existing_atom(name, :latin1)}
+    end
+  end
+
+  def read_avg_min_max(name, others, count) do
+    case Process.whereis(@name) do
+      nil ->
+        0
+      pid ->
+        GenServer.call(pid, {:read_avg_min_max, name, others, count})
+    end
+  end
+
+  def run_async(fun) do
+    GenServer.cast(@name, {:run, fun})
+  end
+
+  def start_link() do
+    GenServer.start_link(__MODULE__, [], name: @name)
+  end
+
+  def init(_args) do
+    {:ok, %{}}
+  end
+
+  def handle_call({:read_avg_min_max, name, others, count}, _from, state) do
+    try do
+      v = read({name, :save})
+      ret= if v == 0 do
+        read_and_reset(count)
+        Enum.each others, fn x ->
+          vx = read({x, :save})
+          vx = if vx != 0, do: vx, else: read_and_reset(x)
+          write({x, :save}, vx)
+        end
+        read_and_reset(name)
+      else
+        delete({name, :save})
+        v
+      end
+      {:reply, ret, state}
+    catch
+      _, _ ->
+        {:reply, 0, state}
+    end
+  end
+
+  def handle_call(_msg, _from, state) do
+    {:reply, {:error, :badreq}, state}
+  end
+
+  def handle_cast({:run, fun}, state) do
+    try do
+      if is_function(fun) do
+        fun.()
+      else
+        :ok
+      end
+    catch
+      _, _ ->
+        :ignore
+    end
+    {:noreply, state}
+  end
+
+  def handle_cast(msg, state) do
+    Logger.error("drop #{inspect(msg)}")
+    {:noreply, state}
+  end
+
+  def handle_info(info, state) do
+    Logger.error("drop #{inspect(info)}")
+    {:noreply, state}
+  end
+
+  def code_change(_vsn, state, _extra) do
+    {:ok, state}
+  end
+
+  def terminate(reason, _state) do
+    Logger.debug("stop by #{inspect(reason)}")
+    :ok
+  end
+
 end
