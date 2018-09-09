@@ -193,7 +193,8 @@ defmodule Skn.Counter do
       end
       {:reply, ret, state}
     catch
-      _, _ ->
+      _, exp ->
+        Logger.error("read_avg_min_max => #{inspect exp}, #{inspect System.stacktrace()}")
         {:reply, 0, state}
     end
   end
@@ -210,7 +211,8 @@ defmodule Skn.Counter do
         :ok
       end
     catch
-      _, _ ->
+      _, exp ->
+        Logger.error("run => #{inspect exp}, #{inspect System.stacktrace()}")
         :ignore
     end
     {:noreply, state}
