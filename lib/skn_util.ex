@@ -82,11 +82,7 @@ defmodule Skn.Util do
     end
 
     def read_term_db(file) do
-        case :file.consult(file) do
-            {:ok, []} -> %{log: [], match: []}
-            {:ok, [result]} -> result
-            {:error, _} -> %{log: [], match: []}
-        end
+        :file.consult(file)
     end
 
     def write_term_db(file, terms) do
