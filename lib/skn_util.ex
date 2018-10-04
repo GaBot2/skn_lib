@@ -23,6 +23,24 @@ defmodule Skn.Util do
         ((x &&& mask) >>> bit) &&& 1
     end
 
+    def int8(x) do
+        x = x &&& 0xFF
+        if x > 0x7F do
+            x - 0x100
+        else
+            x
+        end
+    end
+
+    def uint8(x) do
+        x = x &&& 0xFF
+        if x < 0 do
+            0x100 + x
+        else
+            x
+        end
+    end
+
     def int16(x) do
         x = x &&& 0xFFFF
         if x > 0x7FFF do
