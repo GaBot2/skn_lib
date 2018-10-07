@@ -81,7 +81,7 @@ defmodule Skn.Config do
   def gen_id(key, threshold\\ @default_seq_max) do
       id = Skn.Counter.update_counter(key, 1)
       if id > threshold do
-          reset_id(ket, 1)
+          reset_id(key, 1)
       end
       id
   end
