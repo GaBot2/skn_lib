@@ -132,7 +132,7 @@ defmodule Skn.Counter do
   end
 
   def update_counter(name, incr) do
-    :ets.update_counter(@table, name, {2, incr, @def_threshold, 1}, {name, incr})
+    :ets.update_counter(@table, name, {2, incr, @def_threshold, 1}, {name, 0})
   end
 
   def check_avg_min_max(name) do
