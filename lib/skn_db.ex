@@ -131,8 +131,8 @@ defmodule Skn.Counter do
     :ets.delete(@table, name)
   end
 
-  def update_counter(name, incr) do
-    :ets.update_counter(@table, name, {2, incr, @def_threshold, 1}, {name, 0})
+  def update_counter(name, incr, threshold\\ @def_threshold) do
+    :ets.update_counter(@table, name, {2, incr, threshold, 1}, {name, 0})
   end
 
   def check_avg_min_max(name) do
