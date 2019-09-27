@@ -135,26 +135,6 @@ defmodule Skn.Counter do
     :ets.update_counter(@table, name, {2, incr, threshold, 1}, {name, 0})
   end
 
-  def check_avg_min_max(name) do
-    is_avg_mix_max = String.contains?(name, "_avg") or String.contains?(name, "_min") or String.contains?(name, "_max")
-    if is_avg_mix_max do
-      len = byte_size(name)
-      base = String.slice(name, 0, len - 4)
-      nk = :erlang.binary_to_existing_atom(name, :latin1)
-      os = Enum.reduce(["_avg", "_min", "_max"], [], fn(x, acc) ->
-        xx = base <> x
-        if xx != name do
-          [:erlang.binary_to_existing_atom(xx, :latin1)| acc]
-        else
-          acc
-        end
-      end)
-      {true, nk, os, :erlang.binary_to_existing_atom(base <> "_count", :latin1)}
-    else
-      {false, :erlang.binary_to_existing_atom(name, :latin1)}
-    end
-  end
-
   def read_avg_min_max(name, others, count) do
     case Process.whereis(@name) do
       nil ->
