@@ -149,7 +149,11 @@ defmodule Skn.Counter do
   end
 
   def start_link() do
-    GenServer.start_link(__MODULE__, [], name: @name)
+    start_link([])
+  end
+
+  def start_link(args) do
+    GenServer.start_link(__MODULE__, args, name: @name)
   end
 
   def init(_args) do
