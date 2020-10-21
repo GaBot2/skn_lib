@@ -1,3 +1,3 @@
 %{
-  "epipe": {:hex, :epipe, "1.0.0", "9678d912c34b99dad9c20c4582d393d8101adfe96ebbe7af33b42f6619c96688", [:rebar3], [], "hexpm"},
+  "epipe": {:hex, :epipe, "1.0.0", "9678d912c34b99dad9c20c4582d393d8101adfe96ebbe7af33b42f6619c96688", [:rebar3], [], "hexpm", "8a9d6ef41fa1e97b324726a93460fa712742a85a1957a02fdd9227912ce00ff6"},
 }
