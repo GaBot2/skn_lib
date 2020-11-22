@@ -15,19 +15,12 @@ defmodule Skn.Util do
   end
 
   def h_dword(x) do
-    int32(
-      uint64(x)
-      >>> 32
-    )
+    int32(uint64(x) >>> 32)
   end
 
   def get_bit(x, bit) do
-    mask = (
-      2
-      <<< (bit + 1)) - 1
-    (
-      (x &&& mask)
-      >>> bit) &&& 1
+    mask = (2 <<< (bit + 1)) - 1
+    ((x &&& mask) >>> bit) &&& 1
   end
 
   def int8(x) do
@@ -102,29 +95,9 @@ defmodule Skn.Util do
     end
   end
 
-  def bswap32(x) do
-    (
-      (
-        x
-        <<< 24) &&& 0xff000000) ||| (
-      (
-        x
-        <<< 8) &&& 0x00ff0000) ||| (
-      (
-        x
-        >>> 8) &&& 0x0000ff00) ||| (
-      (
-        x
-        >>> 24) &&& 0x000000ff)
-  end
-
-  def read_term_db(file) do
-    :file.consult(file)
-  end
-
-  def write_term_db(file, terms) do
-    txt = Enum.map(terms, fn x -> :io_lib.format("~w.~n", [x]) end)
-    :file.write_file(file, txt)
+  def swap32(x) do
+    ((x <<< 24) &&& 0xff000000) ||| ((x <<< 8) &&& 0x00ff0000)
+    ||| ((x >>> 8) &&& 0x0000ff00) ||| ((x >>> 24) &&& 0x000000ff)
   end
 
   def check_reset_timer(name, msg, timeout) do
@@ -239,16 +212,5 @@ defmodule Skn.Util do
 
   def check_ipv4(_) do
     false
-  end
-
-  def reuse_ip(exp) do
-    case exp do
-      {:error, :closed} -> true
-      _ -> false
-    end
-  end
-
-  def split_list(list, size) do
-    Enum.chunk_every(list, size)
   end
 end
