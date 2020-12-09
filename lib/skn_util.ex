@@ -1,14 +1,6 @@
 defmodule Skn.Util do
+  @moduledoc false
   use Bitwise
-
-  def decode_float(bin) do
-    <<a :: little - float - size(32)>> = bin
-    a
-  end
-
-  def encode_float(float) do
-    <<float :: little - float - size(32)>>
-  end
 
   def l_dword(x) do
     x &&& 0xFFFFFFFF
