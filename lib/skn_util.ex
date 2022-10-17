@@ -1,6 +1,6 @@
 defmodule Skn.Util do
   @moduledoc false
-  use Bitwise
+  import Bitwise
 
   def l_dword(x) do
     x &&& 0xFFFFFFFF
