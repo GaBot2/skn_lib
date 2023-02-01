@@ -1,3 +1,4 @@
 %{
   "epipe": {:hex, :epipe, "1.0.0", "9678d912c34b99dad9c20c4582d393d8101adfe96ebbe7af33b42f6619c96688", [:rebar3], [], "hexpm", "8a9d6ef41fa1e97b324726a93460fa712742a85a1957a02fdd9227912ce00ff6"},
+  "logger_file_backend": {:hex, :logger_file_backend, "0.0.13", "df07b14970e9ac1f57362985d76e6f24e3e1ab05c248055b7d223976881977c2", [:mix], [], "hexpm", "71a453a7e6e899ae4549fb147b1c6621f4233f8f48f58ca10a64ec67b6c50018"},
 }

@@ -1,5 +1,7 @@
 defmodule Skn.Util do
-  @moduledoc false
+  @moduledoc """
+      provide function to work with stdint
+  """
   import Bitwise
 
   def l_dword(x) do

@@ -21,7 +21,7 @@ defmodule SknLib.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-#      {:epipe, "~> 1.0"}
+      {:logger_file_backend, "~> 0.0.13"}
     ]
   end
 end
