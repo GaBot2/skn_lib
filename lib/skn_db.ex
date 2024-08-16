@@ -51,7 +51,7 @@ defmodule Skn.Config do
   end
 
   def load_config(reset_keys\\ [:farmer_max_id, :farmer_min_id]) do
-    priv = :os.getenv('CONFIG_FILE', './priv/app.config')
+    priv = :os.getenv(~c"CONFIG_FILE", ~c"./priv/app.config")
     {:ok, ret} = :file.consult priv
     Enum.each ret, fn {k, v} ->
       if k in reset_keys do
