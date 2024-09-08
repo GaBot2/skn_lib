@@ -100,7 +100,7 @@ defmodule Skn.Counter do
   use GenServer
   require Logger
   @name :skn_counter
-  @def_threshold  5_000_000_000
+  @def_threshold  0xFFFFFFFFFFFFFFFF
   @table :skn_counter
   def create_db() do
     case :ets.info(@table) do
