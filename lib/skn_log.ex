@@ -2,7 +2,7 @@ defmodule Skn.Log do
     defmacro warn(chardata_or_fun, metadata \\ []) do
         quote do
             if Process.get(:debug, false) == true do
-                Logger.warn(unquote(chardata_or_fun), unquote(metadata))
+                Logger.warning(unquote(chardata_or_fun), unquote(metadata))
             end
         end
     end
